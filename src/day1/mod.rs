@@ -14,12 +14,12 @@ fn get_nth(measurements: &Vec<u32>, window_size: usize, n: usize) -> u32 {
 }
 
 fn count_increments(measurements: &Vec<u32>, window_size: usize) -> u32 {
-    if measurements.len() > 2 {
+    if measurements.len() > window_size + 1 {
         return count_increments(&measurements[0..2].to_vec(), window_size)
             + count_increments(&measurements[1..measurements.len()].to_vec(), window_size);
     }
 
-    if measurements.len() == 2 {
+    if measurements.len() == window_size + 1 {
         let first = get_nth(measurements, window_size, 0);
         let second = get_nth(measurements, window_size, 1);
 
@@ -81,6 +81,13 @@ mod tests {
         let input = [100, 300].to_vec();
         let output = count_increments(&input, 3);
         assert_eq!(output, 0);
+    }
+
+    #[test]
+    fn test_four_inputs_window_size_3() {
+        let input = [37, 47, 73, 74].to_vec();
+        let output = count_increments(&input, 3);
+        assert_eq!(output, 1);
     }
 }
 
