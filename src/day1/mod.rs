@@ -17,6 +17,12 @@ mod tests {
         let output = count_increments(&String::new());
         assert_eq!(output, 0);
     }
+
+    #[test]
+    fn test_single_input() {
+        let output = count_increments("123");
+        assert_eq!(output, 0);
+    }
 }
 
 pub fn sonar_sweep() {
