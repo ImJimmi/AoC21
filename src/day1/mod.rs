@@ -1,11 +1,12 @@
 use std::fs;
 
-fn read_input() -> String {
-    return fs::read_to_string("./src/day1/input.txt").unwrap();
+fn read_input() -> Vec<u32> {
+    let contents = fs::read_to_string("./src/day1/input.txt").unwrap();
+    let tokens = contents.trim().split("\n");
+    return tokens.map(|token| token.parse::<u32>().unwrap()).collect();
 }
 
-fn count_increments(input: &str) -> i32 {
-    let measurements = input.split("\n").collect::<Vec<&str>>();
+fn count_increments(measurements: &Vec<u32>) -> u32 {
 
     if measurements.len() == 2 && measurements[1] > measurements[0] {
         return 1;
@@ -20,25 +21,28 @@ mod tests {
 
     #[test]
     fn test_empty_input() {
-        let output = count_increments(&String::new());
+        let output = count_increments(&Vec::new());
         assert_eq!(output, 0);
     }
 
     #[test]
     fn test_single_input() {
-        let output = count_increments("123");
+        let input = [123].to_vec();
+        let output = count_increments(&input);
         assert_eq!(output, 0);
     }
 
     #[test]
     fn test_two_inputs_incrementing() {
-        let output = count_increments("45\n67");
+        let input = [45, 67].to_vec();
+        let output = count_increments(&input);
         assert_eq!(output, 1);
     }
 
     #[test]
     fn test_two_inputs_decrementing() {
-        let output = count_increments("98\n76");
+        let input = [98, 76].to_vec();
+        let output = count_increments(&input);
         assert_eq!(output, 0);
     }
 }
