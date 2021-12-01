@@ -1,3 +1,4 @@
+use std::cmp;
 use std::fs;
 
 fn read_input() -> Vec<u32> {
@@ -6,14 +7,25 @@ fn read_input() -> Vec<u32> {
     return tokens.map(|token| token.parse::<u32>().unwrap()).collect();
 }
 
+fn get_nth(measurements: &Vec<u32>, window_size: usize, n: usize) -> u32 {
+    let start = n;
+    let stop = cmp::min(measurements.len(), n + window_size);
+    return measurements[start..stop].iter().sum();
+}
+
 fn count_increments(measurements: &Vec<u32>, window_size: usize) -> u32 {
     if measurements.len() > 2 {
         return count_increments(&measurements[0..2].to_vec(), window_size)
             + count_increments(&measurements[1..measurements.len()].to_vec(), window_size);
     }
 
-    if measurements.len() == 2 && measurements[1] > measurements[0] {
-        return 1;
+    if measurements.len() == 2 {
+        let first = get_nth(measurements, window_size, 0);
+        let second = get_nth(measurements, window_size, 1);
+
+        if second > first {
+            return 1;
+        }
     }
 
     return 0;
@@ -60,6 +72,13 @@ mod tests {
     #[test]
     fn test_empty_input_window_size_3() {
         let input = Vec::new();
+        let output = count_increments(&input, 3);
+        assert_eq!(output, 0);
+    }
+
+    #[test]
+    fn test_two_inputs_window_size_3() {
+        let input = [100, 300].to_vec();
         let output = count_increments(&input, 3);
         assert_eq!(output, 0);
     }
