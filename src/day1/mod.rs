@@ -7,6 +7,10 @@ fn read_input() -> Vec<u32> {
 }
 
 fn count_increments(measurements: &Vec<u32>) -> u32 {
+    if measurements.len() > 2 {
+        return count_increments(&measurements[0..2].to_vec())
+            + count_increments(&measurements[1..measurements.len()].to_vec());
+    }
 
     if measurements.len() == 2 && measurements[1] > measurements[0] {
         return 1;
@@ -44,6 +48,13 @@ mod tests {
         let input = [98, 76].to_vec();
         let output = count_increments(&input);
         assert_eq!(output, 0);
+    }
+
+    #[test]
+    fn test_three_inputs_incrementing() {
+        let input = [1, 2, 3].to_vec();
+        let output = count_increments(&input);
+        assert_eq!(output, 2);
     }
 }
 
