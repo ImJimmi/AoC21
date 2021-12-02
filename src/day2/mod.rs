@@ -88,6 +88,7 @@ mod tests {
 
 pub fn dive() {
     let commands = read_input();
+
     let final_position = follow_commands_from(&commands, Position { x: 0, y: 0 });
-    println!("2.1: {:?}", final_position);
+    println!("2.1: {:?}", final_position.x * final_position.y);
 }
