@@ -29,13 +29,16 @@ fn follow_commands_from(commands: &Vec<String>, initial_position: Position) -> P
     }
 
     let displacement = get_displacement_for_command(&commands[0]);
-
     let new_position = Position {
         x: initial_position.x + displacement.x,
         y: initial_position.y + displacement.y,
     };
 
-    return new_position;
+    if commands.len() == 1 {
+        return new_position;
+    }
+
+    return follow_commands_from(&commands[1..commands.len()].to_vec(), new_position);
 }
 
 #[cfg(test)]
@@ -73,6 +76,13 @@ mod tests {
         let input = ["up 9".to_string()].to_vec();
         let output = follow_commands_from(&input, Position { x: 0, y: 13 });
         assert_eq!(output, Position { x: 0, y: 4 });
+    }
+
+    #[test]
+    fn test_two_forward_commands() {
+        let input = ["forward 3".to_string(), "forward 6".to_string()].to_vec();
+        let output = follow_commands_from(&input, Position { x: 0, y: 0 });
+        assert_eq!(output, Position { x: 9, y: 0 });
     }
 }
 
