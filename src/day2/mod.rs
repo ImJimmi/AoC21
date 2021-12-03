@@ -17,6 +17,6 @@ pub fn dive() {
     let final_position_1 = part1::follow_commands_from(&commands, Position { x: 0, y: 0 });
     println!("2.1: {:?}", final_position_1.x * final_position_1.y);
 
-    let final_position_2 = part2::follow_commands_from(&commands, Position { x: 0, y: 0 });
+    let final_position_2 = part2::follow_commands_from(&commands, Position { x: 0, y: 0 }, 0);
     println!("2.2: {:?}", final_position_2.x * final_position_2.y);
 }
