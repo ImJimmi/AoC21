@@ -1,0 +1,60 @@
+def read_input():
+    with open('./src/day4/input.txt') as input_file:
+        contents = input_file.read()
+        lines = contents.split('\n')
+
+        rng = [int(value) for value in lines[0].split(',')]
+        string_boards = [board.strip()
+                         for board in '\n'.join(lines[2:]).split('\n\n')]
+        boards = [[[int(value) for value in line.split()]
+                   for line in board.split('\n')] for board in string_boards]
+
+        return rng, boards
+
+
+def line_has_won(line):
+    return list(line) == ['X'] * len(line)
+
+
+def horizontal_line_has_won(board):
+    return True in [line_has_won(line) for line in board]
+
+
+def rotate_board(board):
+    return list(zip(*board))
+
+
+def vertical_line_has_won(board):
+    return horizontal_line_has_won(rotate_board(board))
+
+
+def board_has_won(board):
+    return horizontal_line_has_won(board) or vertical_line_has_won(board)
+
+
+def mark_number(board, number):
+    for line in board:
+        for i, value in enumerate(line):
+            if number == value:
+                line[i] = 'X'
+
+
+def find_winning_board_and_number(rng, boards):
+    for number in rng:
+        for i, board in enumerate(list(boards)):
+            mark_number(board, number)
+
+            if board_has_won(board):
+                return i, number
+
+
+def sum_unmarked(board):
+    return sum([sum([val for val in line if val != 'X']) for line in board])
+
+
+def calculate_final_score_of_winning_board():
+    rng, boards = read_input()
+
+    winning_board, winning_number = find_winning_board_and_number(rng, boards)
+
+    return sum_unmarked(boards[winning_board]) * winning_number
