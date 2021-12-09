@@ -39,22 +39,51 @@ def mark_number(board, number):
                 line[i] = 'X'
 
 
-def find_winning_board_and_number(rng, boards):
+def sum_unmarked(board):
+    return sum([sum([val for val in line if val != 'X']) for line in board])
+
+
+class BoardInfo:
+    def __init__(self):
+        self.board = []
+        self.winning_number = None
+
+    def get_score(self):
+        return sum_unmarked(self.board) * self.winning_number
+
+
+def sort_boards_in_order_of_winning(boards, rng):
+    result = []
+
+    boards_copy = list(boards)
+
     for number in rng:
-        for i, board in enumerate(list(boards)):
+        for board in list(boards_copy):
             mark_number(board, number)
 
             if board_has_won(board):
-                return i, number
+                info = BoardInfo()
 
+                info.board = board
+                info.winning_number = number
 
-def sum_unmarked(board):
-    return sum([sum([val for val in line if val != 'X']) for line in board])
+                result.append(info)
+                boards_copy.remove(board)
+
+    return result
 
 
 def calculate_final_score_of_winning_board():
     rng, boards = read_input()
 
-    winning_board, winning_number = find_winning_board_and_number(rng, boards)
+    board_info = sort_boards_in_order_of_winning(boards, rng)
 
-    return sum_unmarked(boards[winning_board]) * winning_number
+    return board_info[0].get_score()
+
+
+def calculate_final_score_of_losing_board():
+    rng, boards = read_input()
+
+    board_info = sort_boards_in_order_of_winning(boards, rng)
+
+    return board_info[-1].get_score()

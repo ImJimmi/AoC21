@@ -6,3 +6,4 @@ if __name__ == '__main__':
     print('3.2:', binary_diagnostic.calculate_life_support_rating())
     print('')
     print('4.1: ', giant_squid.calculate_final_score_of_winning_board())
+    print('4.2: ', giant_squid.calculate_final_score_of_losing_board())
