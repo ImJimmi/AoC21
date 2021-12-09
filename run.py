@@ -9,4 +9,5 @@ if __name__ == '__main__':
     print('4.1: ', giant_squid.calculate_final_score_of_winning_board())
     print('4.2: ', giant_squid.calculate_final_score_of_losing_board())
     print('')
-    print('5.1: ', hydrothermal_venture.find_overlapping_points())
+    print('5.1: ', hydrothermal_venture.find_overlapping_points(False))
+    print('5.2: ', hydrothermal_venture.find_overlapping_points(True))

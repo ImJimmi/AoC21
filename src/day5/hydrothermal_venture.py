@@ -22,13 +22,26 @@ class Line:
     def is_horizontal(self):
         return self.start[1] == self.stop[1]
 
-    def get_x_range(self):
-        return range(min(self.start[0], self.stop[0]),
-                     max(self.start[0], self.stop[0]) + 1)
+    def get_covered_points(self):
+        x = self.start[0]
+        y = self.start[1]
 
-    def get_y_range(self):
-        return range(min(self.start[1], self.stop[1]),
-                     max(self.start[1], self.stop[1]) + 1)
+        points = [[x, y]]
+
+        while [x, y] != [self.stop[0], self.stop[1]]:
+            if x < self.stop[0]:
+                x += 1
+            elif x > self.stop[0]:
+                x -= 1
+
+            if y < self.stop[1]:
+                y += 1
+            elif y > self.stop[1]:
+                y -= 1
+
+            points.append([x, y])
+
+        return points
 
 
 def read_input():
@@ -39,9 +52,8 @@ def read_input():
         return [Line.from_string(line) for line in lines]
 
 
-def find_overlapping_points():
-    lines = [line for line in read_input() if line.is_horizontal()
-             or line.is_vertical()]
+def find_overlapping_points(include_diagonal):
+    lines = [line for line in read_input()]
 
     width = max([max([line.start[0], line.stop[0]]) for line in lines]) + 1
     height = max([max([line.start[1], line.stop[1]]) for line in lines]) + 1
@@ -49,9 +61,12 @@ def find_overlapping_points():
     grid = [[0 for _ in range(width)] for _ in range(height)]
 
     for line in lines:
-        for y in line.get_y_range():
-            for x in line.get_x_range():
-                grid[y][x] += 1
+        if not include_diagonal:
+            if not (line.is_horizontal() or line.is_vertical()):
+                continue
+
+        for point in line.get_covered_points():
+            grid[point[1]][point[0]] += 1
 
     count = 0
 
