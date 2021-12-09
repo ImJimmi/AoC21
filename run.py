@@ -14,3 +14,4 @@ if __name__ == '__main__':
     print('5.2: ', hydrothermal_venture.find_overlapping_points(True))
     print('')
     print('6.1: ', lanternfish.get_num_fish_after_num_days(80))
+    print('6.2: ', lanternfish.get_num_fish_after_num_days(256))

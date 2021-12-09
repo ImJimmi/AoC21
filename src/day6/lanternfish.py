@@ -2,26 +2,27 @@ def read_input():
     with open('./src/day6/input.txt') as input_file:
         contents = input_file.read().strip()
 
-        return [int(val) for val in contents.split(',')]
+        fish = [int(val) for val in contents.split(',')]
+        return [fish.count(n) for n in range(9)]
 
 
-def simulate_day(fishes):
-    new_fishes = []
+def simulate_day(school):
+    # get the number of fish about to spawn
+    spawns = school[0]
 
-    for i in range(len(fishes)):
-        fishes[i] = fishes[i] - 1
+    # move all the fish to the left (aka subtract a day) and add the new spawns to the end
+    school = school[1:] + [spawns]
 
-        if fishes[i] == -1:
-            fishes[i] = 6
-            new_fishes.append(8)
+    # move the ones about to spawn to the '6' column
+    school[6] += spawns
 
-    return fishes + new_fishes
+    return school
 
 
 def get_num_fish_after_num_days(num_days):
-    fishes = read_input()
+    school = read_input()
 
     for _ in range(num_days):
-        fishes = simulate_day(fishes)
+        school = simulate_day(school)
 
-    return len(fishes)
+    return sum(school)
