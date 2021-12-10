@@ -18,3 +18,4 @@ if __name__ == '__main__':
     print('6.2: ', lanternfish.get_num_fish_after_num_days(256))
     print('')
     print('7.1: ', treachery_of_whales.get_fuel_cost_to_align_crabs())
+    print('7.2: ', treachery_of_whales.get_fuel_cost_to_align_hummer_crabs())
